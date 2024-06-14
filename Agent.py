@@ -45,7 +45,8 @@ class Commuter():
             loc=loc,
             scale=scale)
     
-    def skewed_data(self, skew_parameter=0, loc= 1.0, scale=1.0, size= 1):
+    def skewed_data(self, skew_parameter=0, loc= 1.0, scale=1.0, size= 1): \
+        # skew_parameter=0, want er is geen skew! Kan ook verwijderd worden; ik heb het voor nu op 0 gezet.
         '''
         Create truncated skewed random variables
         agrs: 
@@ -89,7 +90,7 @@ class Commuter():
         self.pref_crowd = preferences[1]
         self.pref_time = preferences[2]
 
-    def init_population(self, n_agent=num_agents):
+    def init_population(self, n_agent=1000): #num_agent van command-line arg
         '''
         Define the two states of the agents:
             0: Island A
@@ -143,13 +144,13 @@ print()
 """
 This part is for running the model. The argparse part asks the user to give a command-line argument for the number of agents.
 """
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run an agent-based model simulation.")
-    parser.add_argument('--num_agents', type=int, default=1000, help='Number of agents in the simulation')
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser(description="Run an agent-based model simulation.")
+#     parser.add_argument('--num_agents', type=int, default=1000, help='Number of agents in the simulation')
     
-    args = parser.parse_args()
+#     args = parser.parse_args()
     
-    main(args.num_agents)
+#     main(args.num_agents)
         
 
 
