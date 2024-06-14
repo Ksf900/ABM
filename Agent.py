@@ -2,6 +2,7 @@ import numpy as np
 from scipy import stats
 import mesa as ms 
 import matplotlib.pyplot as plt
+import argparse
 
 #To do:
 # - Travel time (per tijdstap/gebeurtenis definieren)
@@ -13,7 +14,7 @@ class Commuter():
     '''
     Agent class for commuters
     '''
-    def __init__(self, unique_id, n_agents = 1000):
+    def __init__(self, unique_id, n_agents = 1000): # n_agents moet gekoppeld worden aan de command-line arg
         '''
         Initialize the agent
         args: 
@@ -44,11 +45,11 @@ class Commuter():
             loc=loc,
             scale=scale)
     
-    def skewed_data(self, skew_parameter=-0.5, loc= 1.0, scale=1.0, size= 1):
+    def skewed_data(self, skew_parameter=0, loc= 1.0, scale=1.0, size= 1):
         '''
         Create truncated skewed random variables
         agrs: 
-            skew_parameter: float, skew parameter
+            skew_parameter: float, skew parameter 
             loc:            float, mean of the normal distribution
             scale:          float, standard deviation of the normal distribution
             size:           int, number of random variables
@@ -77,15 +78,18 @@ class Commuter():
    
     def Preferences(self):
         '''
-        Set the Preferences using the random variables function
+        Set the Preferences using the random variables function:
+            pref_price: The degree to which an agent prefers lower prices.
+            pref_crowd: The degree to which an agent (dis)likes crowdedness.
+            pref_time: The degree to which an agent dislikes time spent in transportation.
         '''
 
         preferences = self.truncated_normal_rvs(0.0, 1.0, 0.5, 0.5/3, 3)
-        self.pref_public = preferences[0]
+        self.pref_price = preferences[0]
         self.pref_crowd = preferences[1]
         self.pref_time = preferences[2]
 
-    def init_population(self, n_agent=1000):
+    def init_population(self, n_agent=num_agents):
         '''
         Define the two states of the agents:
             0: Island A
@@ -136,7 +140,16 @@ print()
 
 # print(data)
 
-
+"""
+This part is for running the model. The argparse part asks the user to give a command-line argument for the number of agents.
+"""
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run an agent-based model simulation.")
+    parser.add_argument('--num_agents', type=int, default=1000, help='Number of agents in the simulation')
+    
+    args = parser.parse_args()
+    
+    main(args.num_agents)
         
 
 
