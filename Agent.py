@@ -65,7 +65,16 @@ agent = Commuter(0)
 
 # print(data)
 
-
+"""
+This part is for running the model. The argparse part asks the user to give a command-line argument for the number of agents.
+"""
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run an agent-based model simulation.")
+    parser.add_argument('--num_agents', type=int, default=1000, help='Number of agents in the simulation')
+    
+    args = parser.parse_args()
+    
+    main(args.num_agents)
         
 
 
