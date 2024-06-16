@@ -18,7 +18,7 @@ changes or demand shifts. Accepts new values for cost, crowding, and travel time
 inputs
 """
 
-class Transportation
+class Transportation:
     def __init__(self, id, capacity, travel_cost, occupancy, travel_time):
         self.id = id
         self.capacity = capacity
@@ -29,7 +29,7 @@ class Transportation
 
 class Ferry:
     def __init__(self, id, capacity, travel_cost, occupancy, travel_time):
-        super.__init__(id, capacity, travel_cost, occupancy, travel_time):
+        super.__init__(id, capacity, travel_cost, occupancy, travel_time)
         self.id = id
         self.capacity = capacity
         self.travel_cost = travel_cost
@@ -38,7 +38,7 @@ class Ferry:
 
 class Speedboat():
     def __init__(self, id, capacity, travel_cost, occupancy, travel_time):
-        super.__init__(id, capacity, travel_cost, occupancy, travel_time):
+        super.__init__(id, capacity, travel_cost, occupancy, travel_time)
         self.id = id
         self.capacity = 1
         self.travel_cost = travel_cost
