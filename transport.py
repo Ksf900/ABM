@@ -19,28 +19,36 @@ inputs
 """
 
 class Transportation:
-    def __init__(self, id, capacity, travel_cost, occupancy, travel_time):
+    def __init__(self, id, capacity, travel_cost, travel_time):
         self.id = id
         self.capacity = capacity
         self.travel_cost = travel_cost
-        self.occupancy = occupancy
+        self.occupancy = 0 # This updates dynamically so initially set to 0
         self.travel_time = travel_time
 
+    def adjust_conditions(self, new_travel_cost=None, new_occupancy=None, new_travel_time=None):
+        if new_travel_cost is not None:
+            self.travel_cost = new_travel_cost
+        if new_occupancy is not None:
+            self.occupancy = new_occupancy
+        if new_travel_time is not None:
+            self.travel_time = new_travel_time
 
-class Ferry:
-    def __init__(self, id, capacity, travel_cost, occupancy, travel_time):
-        super.__init__(id, capacity, travel_cost, occupancy, travel_time)
-        self.id = id
-        self.capacity = capacity
-        self.travel_cost = travel_cost
-        self.occupancy = occupancy
-        self.travel_time = 5
+    def update_occupancy(self, current_users):
+        self.occupancy = current_users / self.capacity
 
-class Speedboat():
-    def __init__(self, id, capacity, travel_cost, occupancy, travel_time):
-        super.__init__(id, capacity, travel_cost, occupancy, travel_time)
-        self.id = id
-        self.capacity = 1
-        self.travel_cost = travel_cost
-        self.occupancy = occupancy
-        self.travel_time = 3
+
+
+class Ferry(Transportation):
+    def update_travel_time(self):
+        # Travel time increases by 1% for every 5% increase in capacity usage
+        usage_percentage = (self.current_users / self.capacity)
+        if usage_percentage > 1:
+            usage_percentage = 1  # Cap the percentage to 100%
+        self.travel_time = self.base_time * (1 + usage_percentage / 5)
+
+class Speedboat(Transportation):
+    def update_travel_time(self):
+        # Travel time increases with more users
+        congestion_effect = max(0, (self.current_users - 1) * 2)
+        self.travel_time = self.base_time + congestion_effect
