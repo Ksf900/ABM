@@ -37,6 +37,7 @@ class Transportation:
         """Update the transport conditions based on the number of current users."""
         self.number_of_mode_users = number_of_mode_users
         self.update_percentage_users()
+        print(self.update_percentage_users)
         self.update_density()
         self.update_time()
         self.update_price()
@@ -45,9 +46,9 @@ class Transportation:
         """Calculate the percentage of capacity currently used."""
         self.percentage_users = self.number_of_mode_users / self.capacity if self.capacity > 0 else 0
 
-    def scale_time(self, time_value):
+    def scale_time(self):
         # Normalize time to [1,10], using the following formula: 1+9*((value-min_value)/(max_value-min_value))
-        normalized_time = int(1 + 9 * ((time_value - self.base_time)/((64 + self.base_time) - self.base_time)))
+        normalized_time = int(1 + 9 * ((self.time - self.base_time)/((64 + self.base_time) - self.base_time)))
         self.time = normalized_time
 
     def update_density(self):
@@ -73,12 +74,13 @@ class Ferry(Transportation):
     def update_time(self):
         """Update travel time based on current usage, with delays at high capacity."""
         # The ferry experiences delay if there are a lot of commuters e.g. 90% of total commuters
-        if self.percentage_users > 0.9:
-            self.time = self.base_time * 1.1 # 10% time increase at >90% capacity
+        if self.percentage_users >= 0.5:
+            self.time = self.base_time * (1.1 +(self.percentage_users-0.5))# 10% time increase at >90% capacity
         else:
             self.time = self.base_time
 
-        self.scale_time(self.time)
+        self.scale_time()
+        print(self.time)
 
 
 
@@ -100,5 +102,6 @@ class Speedboat(Transportation):
         else:
             self.time = self.base_time
 
-        self.scale_time(self.time)
+        self.scale_time()
+        # print(self.time)
         

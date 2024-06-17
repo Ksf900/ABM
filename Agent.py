@@ -25,7 +25,7 @@ class Commuter():
     
         # Agent memory concerning price, density, time for each transportation mode
         self.memory = {}
-        for mode in self.modes_of_transport:
+        for mode in self.modes_of_transportation:
             # Initialise a memory for each mode 
             self.memory[mode] = {'Price': [], 'Density': [], 'Time': []}
  
