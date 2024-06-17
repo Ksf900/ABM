@@ -38,7 +38,6 @@ class Transportation:
         self.occupancy = current_users / self.capacity
 
 
-
 class Ferry(Transportation):
     def update_travel_time(self):
         # Travel time increases by 1% for every 5% increase in capacity usage
