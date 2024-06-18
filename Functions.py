@@ -1,6 +1,5 @@
 import numpy as np
 from scipy import stats
-import mesa as ms 
 import matplotlib.pyplot as plt
 
 def skewed_data(skew_parameter=-0.5, loc= 1.0, scale=1.0, size= 1):
