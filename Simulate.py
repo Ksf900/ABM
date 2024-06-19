@@ -251,8 +251,9 @@ simulation.plot_results()
 data = pd.read_csv("simulation_data.csv")
 data.plot()
 
-# Plot specific results
+# Plot specific results, type in name of speicific result using ''
 metrics_to_plot = [
     'ferry_BA_density', 'speedboat_BA_density'
 ]
+
 simulation.plot_specific_results(metrics_to_plot)
