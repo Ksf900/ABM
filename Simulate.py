@@ -22,7 +22,6 @@ from mesa.datacollection import DataCollector
 
 # 6. start at 2.
 
-
 # It works mostly but I think the transportation class with the time implementation can be improved still.
 
 
@@ -253,7 +252,7 @@ data.plot()
 
 # Plot specific results, type in name of speicific result using ''
 metrics_to_plot = [
-    'ferry_BA_density', 'speedboat_BA_density'
+    'ferry_BA_density', 'ferry_BA_time'
 ]
 
 simulation.plot_specific_results(metrics_to_plot)
