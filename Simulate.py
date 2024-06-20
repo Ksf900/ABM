@@ -198,11 +198,11 @@ class Simulation:
 # Example usage
 islands = ["Island_A", "Island_B", "Island_C", "Island_D"]
 simulation = Simulation(
-    num_commuters=200,
+    num_commuters=250,
     num_days=30,
     islands=islands,
-    capacity=200,
-    ferry_base_price=5,
+    capacity=180,
+    ferry_base_price=2,
     ferry_base_time=40,
     speedboat_base_price=5,
     speedboat_base_time=20
