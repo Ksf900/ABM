@@ -27,7 +27,6 @@ class Transportation:
 
         self.number_of_mode_users = 0
         self.percentage_users = 0
-        
 
         self.start_location = start_location # Start location as characteristic of mode
         self.end_location = end_location # Destination as characteristic of mode
@@ -59,7 +58,6 @@ class Transportation:
         """Placeholder for subclasses to implement specific time updates."""
         pass
 
-
     def update_price(self):
         """Placeholder for future dynamic pricing implementations."""
         pass
@@ -82,7 +80,6 @@ class Ferry(Transportation):
         print(self.time)
 
 
-
 class Speedboat(Transportation):
     def update_density(self):
         """Set density to 1 as speedboats are less likely to be affected by user density."""
@@ -103,4 +100,3 @@ class Speedboat(Transportation):
 
         self.scale_time()
         # print(self.time)
-        
