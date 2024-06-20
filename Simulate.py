@@ -156,10 +156,11 @@ class Simulation:
     def create_data_collectors(self):
         data_collectors = {}
         for mode in self.transport_modes:
-            data_collectors[f'{mode.start_location}_{mode.end_location}_users'] = (lambda m, mode=mode: mode.number_of_mode_users)
-            data_collectors[f'{mode.start_location}_{mode.end_location}_time'] = (lambda m, mode=mode: mode.time)
-            data_collectors[f'{mode.start_location}_{mode.end_location}_density'] = (lambda m, mode=mode: mode.density)
-            data_collectors[f'{mode.start_location}_{mode.end_location}_price'] = (lambda m, mode=mode: mode.price)
+            mode_key = f'{type(mode).__name__}_{mode.start_location}_{mode.end_location}'
+            data_collectors[f'{mode_key}_users'] = (lambda m, mode=mode: mode.number_of_mode_users)
+            data_collectors[f'{mode_key}_time'] = (lambda m, mode=mode: mode.time)
+            data_collectors[f'{mode_key}_density'] = (lambda m, mode=mode: mode.density)
+            data_collectors[f'{mode_key}_price'] = (lambda m, mode=mode: mode.price)
         return data_collectors
 
     def run(self):
@@ -212,9 +213,9 @@ simulation.run()
 
 # Plot specific results
 metrics_to_plot = [
-    'Island_A_Island_B_price', 'Island_B_Island_A_users',
-    'Island_C_Island_D_price', 'Island_D_Island_A_users'
-]
+    'Ferry_Island_A_Island_B_users', 'Speedboat_Island_A_Island_B_users',
+    'Ferry_Island_C_Island_D_users', 'Speedboat_Island_D_Island_C_users'
+    ]
 simulation.plot_specific_results(metrics_to_plot)
 
 
