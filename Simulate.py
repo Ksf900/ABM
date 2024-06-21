@@ -1,4 +1,4 @@
-from Transport import Ferry, Speedboat
+from transport import Ferry, Speedboat
 from Functions import truncated_normal_rvs
 from Agent import Commuter
 
@@ -96,7 +96,7 @@ simulation = Simulation(
     num_days=60,
     islands=islands,
     capacity=200,
-    ferry_base_price=5,
+    ferry_base_price=1,
     ferry_base_time=40,
     speedboat_base_price=6,
     speedboat_base_time=10,

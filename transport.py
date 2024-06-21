@@ -54,8 +54,8 @@ class Transportation:
 
     def update_percentage_users(self):
         """Calculate the percentage of capacity currently used."""
-        self.percentage_users = self.number_of_mode_users / self.capacity if self.capacity > 0 else 0
-        print(self.update_percentage_users)
+        self.percentage_users = self.number_of_mode_users / self.capacity 
+        print(self.number_of_mode_users, self.capacity, self.percentage_users)
 
     def scale_time(self):
         """Normalize time to [1,10] range."""
@@ -91,7 +91,7 @@ class Ferry(Transportation):
             self.time = self.base_time
 
         self.scale_time()
-        print(self.time)
+        # print(self.time)
 
 
 class Speedboat(Transportation):
