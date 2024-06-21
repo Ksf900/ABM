@@ -71,7 +71,7 @@ class Commuter():
         return best_option
 
         
-    def utility(self, mode, noise_std=0):
+    def utility(self, mode, noise_std=0.01):
         ''' Calculate utility for a given mode based on historical data. '''
         if len(self.memory[mode]['Price']) > 0:
             average_price_memory = np.mean(self.memory[mode]['Price'][-5:])

@@ -1,4 +1,4 @@
-from transport import Ferry, Speedboat
+from Transport import Ferry, Speedboat
 from Functions import truncated_normal_rvs
 from Agent import Commuter
 
@@ -58,6 +58,7 @@ class Simulation:
 
             for mode, num_users in daily_choices.items():
                 mode.update_conditions(num_users)
+                print(num_users)
 
             for commuter, chosen_mode in commuter_choices.items():
                 commuter.update_memory(chosen_mode)
@@ -97,8 +98,8 @@ simulation = Simulation(
     capacity=200,
     ferry_base_price=5,
     ferry_base_time=40,
-    speedboat_base_price=5,
-    speedboat_base_time=20,
+    speedboat_base_price=6,
+    speedboat_base_time=10,
 )
 
 simulation.run()

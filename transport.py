@@ -47,7 +47,7 @@ class Transportation:
         """Update the transport conditions based on the number of current users."""
         self.number_of_mode_users = number_of_mode_users
         self.update_percentage_users()
-        print(self.update_percentage_users)
+        
         self.update_density()
         self.update_time()
         self.update_price()
@@ -55,11 +55,13 @@ class Transportation:
     def update_percentage_users(self):
         """Calculate the percentage of capacity currently used."""
         self.percentage_users = self.number_of_mode_users / self.capacity if self.capacity > 0 else 0
+        print(self.update_percentage_users)
 
     def scale_time(self):
         """Normalize time to [1,10] range."""
         min_time = Transportation.global_min_time
         max_time = Transportation.global_max_time
+        # print(min_time, max_time)
         self.time = 1 + 9 * ((self.time - min_time) / (max_time - min_time))
 
     def update_density(self):
