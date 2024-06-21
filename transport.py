@@ -16,6 +16,11 @@ class Transportation:
             time (float): Current travel time considering the latest updates.
             density (float): Current density of usage.
         """
+    
+    # Class variables to store global min and max time values
+    global_min_time = float('inf')
+    global_max_time = float('-inf')
+
     def __init__(self, start_location, end_location, capacity, base_price, base_time):
         
         self.capacity = capacity # Include possibility of max capacity for ferry
@@ -30,6 +35,12 @@ class Transportation:
 
         self.start_location = start_location # Start location as characteristic of mode
         self.end_location = end_location # Destination as characteristic of mode
+
+        
+
+        # Update global min and max times based on this instance's base time
+        Transportation.global_min_time = min(Transportation.global_min_time, base_time)
+        Transportation.global_max_time = max(Transportation.global_max_time, base_time * 1.6, base_time + 64)
 
 
     def update_conditions(self, number_of_mode_users):
@@ -46,9 +57,10 @@ class Transportation:
         self.percentage_users = self.number_of_mode_users / self.capacity if self.capacity > 0 else 0
 
     def scale_time(self):
-        # Normalize time to [1,10], using the following formula: 1+9*((value-min_value)/(max_value-min_value))
-        normalized_time = int(1 + 9 * ((self.time - self.base_time)/((64 + self.base_time) - self.base_time)))
-        self.time = normalized_time
+        """Normalize time to [1,10] range."""
+        min_time = Transportation.global_min_time
+        max_time = Transportation.global_max_time
+        self.time = 1 + 9 * ((self.time - min_time) / (max_time - min_time))
 
     def update_density(self):
         """Placeholder for subclasses to implement specific density calculations."""
