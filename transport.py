@@ -16,6 +16,11 @@ class Transportation:
             time (float): Current travel time considering the latest updates.
             density (float): Current density of usage.
         """
+    
+    # Class variables to store global min and max time values
+    global_min_time = float('inf')
+    global_max_time = float('-inf')
+
     def __init__(self, start_location, end_location, capacity, base_price, base_time):
         
         self.capacity = capacity # Include possibility of max capacity for ferry
@@ -31,24 +36,33 @@ class Transportation:
         self.start_location = start_location # Start location as characteristic of mode
         self.end_location = end_location # Destination as characteristic of mode
 
+        
+
+        # Update global min and max times based on this instance's base time
+        Transportation.global_min_time = min(Transportation.global_min_time, base_time)
+        Transportation.global_max_time = max(Transportation.global_max_time, base_time * 1.6, base_time + 64)
+
 
     def update_conditions(self, number_of_mode_users):
         """Update the transport conditions based on the number of current users."""
         self.number_of_mode_users = number_of_mode_users
         self.update_percentage_users()
-        print(self.update_percentage_users)
+        
         self.update_density()
         self.update_time()
         self.update_price()
 
     def update_percentage_users(self):
         """Calculate the percentage of capacity currently used."""
-        self.percentage_users = self.number_of_mode_users / self.capacity if self.capacity > 0 else 0
+        self.percentage_users = self.number_of_mode_users / self.capacity 
+        print(self.number_of_mode_users, self.capacity, self.percentage_users)
 
     def scale_time(self):
-        # Normalize time to [1,10], using the following formula: 1+9*((value-min_value)/(max_value-min_value))
-        normalized_time = int(1 + 9 * ((self.time - self.base_time)/((64 + self.base_time) - self.base_time)))
-        self.time = normalized_time
+        """Normalize time to [1,10] range."""
+        min_time = Transportation.global_min_time
+        max_time = Transportation.global_max_time
+        # print(min_time, max_time)
+        self.time = 1 + 9 * ((self.time - min_time) / (max_time - min_time))
 
     def update_density(self):
         """Placeholder for subclasses to implement specific density calculations."""
@@ -77,7 +91,7 @@ class Ferry(Transportation):
             self.time = self.base_time
 
         self.scale_time()
-        print(self.time)
+        # print(self.time)
 
 
 class Speedboat(Transportation):
