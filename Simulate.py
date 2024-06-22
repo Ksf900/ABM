@@ -71,7 +71,7 @@ class Simulation:
     def plot_specific_results(self, metrics):
         data = self.datacollector.get_model_vars_dataframe()
 
-        plt.figure(figsize=(15, 8))
+        plt.figure(figsize=(20, 8))
         
         for metric in metrics:
             plt.plot(data.index, data[metric], label=metric.replace('_', ' ').title())
@@ -98,9 +98,9 @@ simulation = Simulation(
     num_commuters=1000,
     num_days=100,
     islands=islands,
-    capacity=100,
-    ferry_base_price=6,
-    ferry_base_time=50,
+    capacity=1000,
+    ferry_base_price=1,
+    ferry_base_time=40,
     speedboat_base_price=6,
     speedboat_base_time=20,
 )
