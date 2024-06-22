@@ -16,10 +16,7 @@ class Transportation:
             time (float): Current travel time considering the latest updates.
             density (float): Current density of usage.
         """
-    
-    # Class variables to store global min and max time values
-    global_min_time = float('inf')
-    global_max_time = float('-inf')
+
 
     def __init__(self, start_location, end_location, capacity, base_price, base_time):
         
@@ -36,33 +33,24 @@ class Transportation:
         self.start_location = start_location # Start location as characteristic of mode
         self.end_location = end_location # Destination as characteristic of mode
 
-        
 
-        # Update global min and max times based on this instance's base time
-        Transportation.global_min_time = min(Transportation.global_min_time, base_time)
-        Transportation.global_max_time = max(Transportation.global_max_time, base_time * 1.6, base_time + 64)
-
-
-    def update_conditions(self, number_of_mode_users):
+    def update_conditions(self, number_of_mode_users, total_number_of_commuters, initial_ferry_score):
         """Update the transport conditions based on the number of current users."""
         self.number_of_mode_users = number_of_mode_users
+        self.total_number_of_commuters = total_number_of_commuters
+        self.initial_ferry_score = initial_ferry_score
         self.update_percentage_users()
         
         self.update_density()
         self.update_time()
         self.update_price()
+        
 
     def update_percentage_users(self):
-        """Calculate the percentage of capacity currently used."""
-        self.percentage_users = self.number_of_mode_users / self.capacity 
-        print(self.number_of_mode_users, self.capacity, self.percentage_users)
+        """Calculate the percentage of commuters for a certain mode of transport."""
+        self.percentage_users = self.number_of_mode_users / self.total_number_of_commuters
+        # print(self.number_of_mode_users, self.capacity, self.percentage_users)
 
-    def scale_time(self):
-        """Normalize time to [1,10] range."""
-        min_time = Transportation.global_min_time
-        max_time = Transportation.global_max_time
-        # print(min_time, max_time)
-        self.time = 1 + 9 * ((self.time - min_time) / (max_time - min_time))
 
     def update_density(self):
         """Placeholder for subclasses to implement specific density calculations."""
@@ -79,38 +67,34 @@ class Transportation:
 
 class Ferry(Transportation):
     def update_density(self):  
-        """Update the density based on the percentage of capacity used."""
-        self.density = self.percentage_users * 10 # Scale the density to range [1,10]
+        """Update the density based on the number of commuters that used the ferry, using
+        a sigmoid function.
+    
+        """
+        self.density = 1 + (9/(1+np.exp(-10*((self.number_of_mode_users/self.capacity)-0.5))))
+        print(f'Ferry: density={self.density}')
 
     def update_time(self):
-        """Update travel time based on current usage, with delays at high capacity."""
-        # The ferry experiences delay if there are a lot of commuters e.g. 90% of total commuters
-        if self.percentage_users >= 0.5:
-            self.time = self.base_time * (1.1 +(self.percentage_users-0.5))# 10% time increase at >90% capacity
-        else:
-            self.time = self.base_time
+        
+        # The ferry experiences small delay until capacity, then steeper increase
+        normalizing_factor = 10 - self.initial_ferry_score
+        self.time = self.initial_ferry_score + (normalizing_factor/(1+np.exp(-2*((self.number_of_mode_users/self.capacity)-1)))) # Only increase significantly after capacity is reached
+        print(f'Ferry: time={self.time}')
 
-        self.scale_time()
-        # print(self.time)
-
-
+    
+        
+        
 class Speedboat(Transportation):
     def update_density(self):
-        """Set density to 1 as speedboats are less likely to be affected by user density."""
-        self.density = 1 
+        """Update density of speedboats based on nr of mode users. Comfort may decrease because of time increase when there are loads of people."""
+        self.density = 1 + (9/(1+np.exp(-10*((self.number_of_mode_users/self.total_number_of_commuters)-0.7))))
+        print(f'Speedboat: density={self.density}')
 
     def update_time(self):
         """Update travel time based on congestion levels."""
-        # Speedboats experience "traffic jam" when more than 30% of total commuters are taking the speedboat
-        if self.percentage_users >= 0.3:
-            # Traffic congestion increases the travel time exponentially
-            # Travel time increase per increase in percentage user: 
-            # {0.3: +1min, 0.4: +4min, 0.5: +9 min, 0.6: +16min, 0.7: +25min, 0.8: +36min, 0.9: +49min, 1.0: +64min}
-            congestion = ((self.percentage_users - 0.2) * 10)**2 
-            self.time = self.base_time + congestion
-    
-        else:
-            self.time = self.base_time
+        self.time = 1 + (9/(1+np.exp(-20*((self.number_of_mode_users/self.total_number_of_commuters)-0.3)))) # Research showed that traffic increases at 30% of car use
+        print(f'Speedboat: time={self.time}')
+        
 
-        self.scale_time()
-        # print(self.time)
+
+        

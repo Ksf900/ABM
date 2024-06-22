@@ -62,6 +62,7 @@ class Commuter():
         for mode in available_modes:
             mode_utility[mode] = self.utility(mode)
 
+
         # Define best mode of transport based on highest utility score
         best_option = max(mode_utility, key=mode_utility.get)
         
@@ -83,10 +84,14 @@ class Commuter():
         stochastic_term = np.random.normal(0, noise_std)
         # stochastic_term = 0
 
-        return (- self.pref_price * average_price_memory 
+        utility = (- self.pref_price * average_price_memory 
                 - self.pref_density * average_density_memory 
                 - self.pref_time * average_time_memory
                 + stochastic_term)
+        
+        # print(utility, stochastic_term)
+        
 
+        return utility
 
 
