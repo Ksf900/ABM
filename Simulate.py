@@ -71,22 +71,24 @@ class Simulation:
     def plot_specific_results(self, metrics):
         data = self.datacollector.get_model_vars_dataframe()
 
-        plt.figure(figsize=(20, 8))
+        plt.figure(figsize=(20, 8), dpi=300)
+        total_commuters = self.num_commuters
         
         for metric in metrics:
-            plt.plot(data.index, data[metric], label=metric.replace('_', ' ').title())
+            percentage_ferry = (data[metric] / total_commuters) * 100
+            plt.plot(data.index, percentage_ferry, label=metric.replace('_', ' ').title())
         
-        plt.xlabel('Day')
-        plt.ylabel('Number of Commuters')
+        plt.xlabel('Day', fontsize=12, fontweight='bold')
+        plt.ylabel('Ferry Commuters (%)', fontsize=12, fontweight='bold')
         plt.legend()
-        plt.title('Users per Transportation Mode')
+        plt.title('Percentage Ferry Commuters', fontsize=20, fontweight='bold')
         plt.tight_layout()
         plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
         plt.grid(True)
         plt.show()
 
 
-islands = ["Island_A", "Island_B"]
+# islands = ["Island_A", "Island_B"]
 
 # # Example usage with transport restrictions (restrictions are which mode to use)
 # # transport_restrictions = {
@@ -94,25 +96,25 @@ islands = ["Island_A", "Island_B"]
 # #     ("Island_D", "Island_C"): {"Speedboat"}
 # # }
 
-simulation = Simulation(
-    num_commuters=1000,
-    num_days=100,
-    islands=islands,
-    capacity=1000,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=20,
-)
+# simulation = Simulation(
+#     num_commuters=1000,
+#     num_days=100,
+#     islands=islands,
+#     capacity=1000,
+#     ferry_base_price=1,
+#     ferry_base_time=40,
+#     speedboat_base_price=6,
+#     speedboat_base_time=20,
+# )
 
-simulation.run()
+# simulation.run()
 
-# Plot specific results
-metrics_to_plot = [
-    'Ferry_Island_A_Island_B_users',
-    'Ferry_Island_B_Island_A_users', 
-    'Speedboat_Island_A_Island_B_users', 
-    'Speedboat_Island_B_Island_A_users'
-]
+# # Plot specific results
+# metrics_to_plot = [
+#     'Ferry_Island_A_Island_B_users',
+#     'Ferry_Island_B_Island_A_users', 
+#     'Speedboat_Island_A_Island_B_users', 
+#     'Speedboat_Island_B_Island_A_users'
+# ]
 
-simulation.plot_specific_results(metrics_to_plot)
+# simulation.plot_specific_results(metrics_to_plot)
