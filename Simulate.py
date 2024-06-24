@@ -22,6 +22,8 @@ class Simulation:
         self.datacollector = DataCollector(
             model_reporters=self.create_data_collectors()
         )
+
+        self.initial_ferry_score = (ferry_base_time - speedboat_base_time)/ (ferry_base_time + speedboat_base_time)
         
     def create_transport_modes(self, islands, capacity, ferry_base_price, ferry_base_time, speedboat_base_price, speedboat_base_time):
         for i, island_start in enumerate(islands):
@@ -55,8 +57,8 @@ class Simulation:
                 commuter_choices[commuter] = chosen_mode
 
             for mode, num_users in daily_choices.items():
-                mode.update_conditions(num_users)
-                print(num_users)
+                mode.update_conditions(num_users, self.num_commuters, self.initial_ferry_score)
+                # print(num_users)
 
             for commuter, chosen_mode in commuter_choices.items():
                 commuter.update_memory(chosen_mode)

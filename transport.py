@@ -79,14 +79,14 @@ class Ferry(Transportation):
             excess_users = self.number_of_mode_users - self.capacity
             excess_max = self.total_number_of_commuters - self.capacity
             self.density = 5 + (5/(1+np.exp(-15*((excess_users/excess_max)-0.2))))
-        print(f'Ferry: density={self.density}')
+        # print(f'Ferry: density={self.density}')
 
     def update_time(self):
         
         # The ferry experiences small delay until capacity, then steeper increase
         normalizing_factor = 10 - self.initial_ferry_score
         self.time = self.initial_ferry_score + (normalizing_factor/(1+np.exp(-2*((self.number_of_mode_users/self.capacity)-1)))) # Only increase significantly after capacity is reached
-        print(f'Ferry: commuters={self.number_of_mode_users}, time={self.time}')
+        # print(f'Ferry: commuters={self.number_of_mode_users}, time={self.time}')
 
     
         
@@ -96,12 +96,12 @@ class Speedboat(Transportation):
         """Update density of speedboats based on nr of mode users. With more speedboat users, higher risk on discomfort due to water fights. Slow increase only at 60%"""
         self.density = 1 + (9/(1+np.exp(-10*((self.number_of_mode_users/self.total_number_of_commuters)-0.6))))
         # self.density = 1
-        print(f'Speedboat: density={self.density}')
+        # print(f'Speedboat: density={self.density}')
 
     def update_time(self):
         """Update travel time based on congestion levels."""
         self.time = 1 + (9/(1+np.exp(-20*((self.number_of_mode_users/self.total_number_of_commuters)-0.35)))) # Research showed that traffic increases at 30-40% of car use
-        print(f'Speedboat: time={self.time}')
+        # print(f'Speedboat: time={self.time}')
         
 
 
