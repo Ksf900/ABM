@@ -7,8 +7,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from mesa.datacollection import DataCollector
 
-
-################################################
 class Simulation:
     def __init__(self, num_commuters, num_days, islands, capacity, ferry_base_price, ferry_base_time,
                  speedboat_base_price, speedboat_base_time, transport_restrictions=None):
