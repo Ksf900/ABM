@@ -24,6 +24,9 @@ class Simulation:
         self.datacollector = DataCollector(
             model_reporters=self.create_data_collectors()
         )
+
+        self.initial_ferry_score = (ferry_base_time - speedboat_base_time) /  (ferry_base_time + speedboat_base_time)*10
+    
         
     def create_transport_modes(self, islands, capacity, ferry_base_price, ferry_base_time, speedboat_base_price, speedboat_base_time):
         for i, island_start in enumerate(islands):
@@ -57,8 +60,8 @@ class Simulation:
                 commuter_choices[commuter] = chosen_mode
 
             for mode, num_users in daily_choices.items():
-                mode.update_conditions(num_users)
-                print(num_users)
+                mode.update_conditions(num_users, self.num_commuters, self.initial_ferry_score)
+        
 
             for commuter, chosen_mode in commuter_choices.items():
                 commuter.update_memory(chosen_mode)
@@ -68,11 +71,7 @@ class Simulation:
     def plot_specific_results(self, metrics):
         data = self.datacollector.get_model_vars_dataframe()
 
-<<<<<<< Updated upstream
-        plt.figure(figsize=(15, 8))
-=======
         plt.figure(figsize=(20, 8))
->>>>>>> Stashed changes
         
         for metric in metrics:
             plt.plot(data.index, data[metric], label=metric.replace('_', ' ').title())
@@ -81,8 +80,6 @@ class Simulation:
         plt.ylabel('Number of Commuters')
         plt.legend()
         plt.title('Users per Transportation Mode')
-<<<<<<< Updated upstream
-=======
         plt.tight_layout()
         plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
         plt.grid(True)
@@ -101,38 +98,24 @@ class Simulation:
         plt.plot(data.index, percentage_Ferry_users)
         plt.xlabel('Day')
         plt.ylabel('Percentage of commuters using the Ferry')
-        # plt.legend()
+        plt.legend()
         plt.title('Percentage Ferry users')
->>>>>>> Stashed changes
         plt.tight_layout()
         plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
         plt.grid(True)
         plt.show()
 
 
-<<<<<<< Updated upstream
-islands = ["Island_A", "Island_B", "Island_C"]
-=======
-islands = ["Island_A", "Island_B"]
->>>>>>> Stashed changes
 
-# Example usage with transport restrictions (restrictions are which mode to use)
-# transport_restrictions = {
-#     ("Island_C", "Island_D"): {"Speedboat"},
-#     ("Island_D", "Island_C"): {"Speedboat"}
-# }
+islands = ["Island_A", "Island_B"]
+
+# # Example usage with transport restrictions (restrictions are which mode to use)
+# # transport_restrictions = {
+# #     ("Island_C", "Island_D"): {"Speedboat"},
+# #     ("Island_D", "Island_C"): {"Speedboat"}
+# # }
 
 simulation = Simulation(
-<<<<<<< Updated upstream
-    num_commuters=200,
-    num_days=60,
-    islands=islands,
-    capacity=200,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=10,
-=======
     num_commuters=1000,
     num_days=100,
     islands=islands,
@@ -141,22 +124,12 @@ simulation = Simulation(
     ferry_base_time=40,
     speedboat_base_price=6,
     speedboat_base_time=20,
->>>>>>> Stashed changes
 )
 
 simulation.run()
 
 # Plot specific results
 metrics_to_plot = [
-<<<<<<< Updated upstream
-    'Ferry_Island_A_Island_B_users', 'Ferry_Island_A_Island_C_users', 'Ferry_Island_B_Island_C_users',
-    'Ferry_Island_B_Island_A_users', 'Ferry_Island_C_Island_A_users', 'Ferry_Island_C_Island_B_users',
-    'Speedboat_Island_A_Island_B_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_B_Island_C_users',
-    'Speedboat_Island_B_Island_A_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_C_Island_B_users'
-]
-
-simulation.plot_specific_results(metrics_to_plot)
-=======
     'Ferry_Island_A_Island_B_users',
     'Ferry_Island_B_Island_A_users', 
     'Speedboat_Island_A_Island_B_users', 
@@ -164,4 +137,3 @@ simulation.plot_specific_results(metrics_to_plot)
 ]
 
 simulation.plot_percentage_ferry_users(metrics_to_plot)
->>>>>>> Stashed changes
