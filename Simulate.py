@@ -102,6 +102,18 @@ class Simulation:
         plt.grid(True)
         plt.show()
 
+    def return_percentage_ferry_users(self, metrics):
+        data = self.datacollector.get_model_vars_dataframe()
+        num_Ferry_users = 0
+        for metric in metrics:
+            if metric[0] == 'F':
+                num_Ferry_users += data[metric]
+
+        percentage_Ferry_users = num_Ferry_users / self.num_commuters
+        
+        return percentage_Ferry_users
+
+
 
 
 ###########################################
