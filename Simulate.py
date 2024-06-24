@@ -72,16 +72,33 @@ class Simulation:
         data = self.datacollector.get_model_vars_dataframe()
 
         plt.figure(figsize=(20, 8), dpi=300)
-        total_commuters = self.num_commuters
         
         for metric in metrics:
-            percentage_ferry = (data[metric] / total_commuters) * 100
-            plt.plot(data.index, percentage_ferry, label=metric.replace('_', ' ').title())
+            plt.plot(data.index, data[metric], label=metric.replace('_', ' ').title())
         
         plt.xlabel('Day', fontsize=12, fontweight='bold')
         plt.ylabel('Ferry Commuters (%)', fontsize=12, fontweight='bold')
         plt.legend()
         plt.title('Percentage Ferry Commuters', fontsize=20, fontweight='bold')
+        plt.tight_layout()
+        plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
+        plt.grid(True)
+        plt.show()
+
+    def plot_varying_results(self, metrics):
+        data = self.datacollector.get_model_vars_dataframe()
+
+        plt.figure(figsize=(20, 8), dpi=300)
+        total_commuters = self.num_commuters
+        
+        for metric in metrics:
+            percentage_user = (data[metric] / total_commuters) * 100
+            plt.plot(data.index, percentage_user, label=metric.replace('_', ' ').title())
+        
+        plt.xlabel('Day', fontsize=12, fontweight='bold')
+        plt.ylabel('Commuters (%)', fontsize=12, fontweight='bold')
+        plt.legend()
+        plt.title('Percentage Commuters using the Ferry or Boat', fontsize=20, fontweight='bold')
         plt.tight_layout()
         plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
         plt.grid(True)
