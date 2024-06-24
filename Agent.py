@@ -3,7 +3,6 @@ from scipy import stats
 import matplotlib.pyplot as plt
 from Functions import truncated_normal_rvs
 
-
 class Commuter():
     '''
     Represents a commuter in a transportation simulation.

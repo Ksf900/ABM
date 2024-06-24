@@ -7,8 +7,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from mesa.datacollection import DataCollector
 
-
-################################################
 class Simulation:
     def __init__(self, num_commuters, num_days, islands, capacity, ferry_base_price, ferry_base_time,
                  speedboat_base_price, speedboat_base_time, transport_restrictions=None):
@@ -24,9 +22,6 @@ class Simulation:
         self.datacollector = DataCollector(
             model_reporters=self.create_data_collectors()
         )
-
-        self.initial_ferry_score = (ferry_base_time - speedboat_base_time) /  (ferry_base_time + speedboat_base_time)*10
-    
         
     def create_transport_modes(self, islands, capacity, ferry_base_price, ferry_base_time, speedboat_base_price, speedboat_base_time):
         for i, island_start in enumerate(islands):
@@ -60,8 +55,8 @@ class Simulation:
                 commuter_choices[commuter] = chosen_mode
 
             for mode, num_users in daily_choices.items():
-                mode.update_conditions(num_users, self.num_commuters, self.initial_ferry_score)
-        
+                mode.update_conditions(num_users)
+                print(num_users)
 
             for commuter, chosen_mode in commuter_choices.items():
                 commuter.update_memory(chosen_mode)
@@ -71,41 +66,75 @@ class Simulation:
     def plot_specific_results(self, metrics):
         data = self.datacollector.get_model_vars_dataframe()
 
-        plt.figure(figsize=(20, 8), dpi=300)
+        plt.figure(figsize=(15, 8))
         
         for metric in metrics:
             plt.plot(data.index, data[metric], label=metric.replace('_', ' ').title())
         
-        plt.xlabel('Day', fontsize=12, fontweight='bold')
-        plt.ylabel('Ferry Commuters (%)', fontsize=12, fontweight='bold')
+        plt.xlabel('Day')
+        plt.ylabel('Number of Commuters')
         plt.legend()
-        plt.title('Percentage Ferry Commuters', fontsize=20, fontweight='bold')
+        plt.title('Users per Transportation Mode')
         plt.tight_layout()
         plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
         plt.grid(True)
         plt.show()
-
-    def plot_varying_results(self, metrics):
+        
+    def plot_percentage_ferry_users(self, metrics):
         data = self.datacollector.get_model_vars_dataframe()
-
-        plt.figure(figsize=(20, 8), dpi=300)
-        total_commuters = self.num_commuters
-        
+        num_Ferry_users = 0
         for metric in metrics:
-            percentage_user = (data[metric] / total_commuters) * 100
-            plt.plot(data.index, percentage_user, label=metric.replace('_', ' ').title())
+            if metric[0] == 'F':
+                num_Ferry_users += data[metric]
+
+        percentage_Ferry_users = num_Ferry_users / self.num_commuters
         
-        plt.xlabel('Day', fontsize=12, fontweight='bold')
-        plt.ylabel('Commuters (%)', fontsize=12, fontweight='bold')
+        plt.figure(figsize=(20, 8))
+        plt.plot(data.index, percentage_Ferry_users)
+        plt.xlabel('Day')
+        plt.ylabel('Percentage of commuters using the Ferry')
         plt.legend()
-        plt.title('Percentage Commuters using the Ferry or Boat', fontsize=20, fontweight='bold')
+        plt.title('Percentage Ferry users')
         plt.tight_layout()
         plt.xticks(np.arange(min(data.index), max(data.index)+1, 1))
         plt.grid(True)
         plt.show()
 
 
-# islands = ["Island_A", "Island_B"]
+islands = ["Island_A", "Island_B", "Island_C"]
+
+# Example usage with transport restrictions (restrictions are which mode to use)
+# transport_restrictions = {
+#     ("Island_C", "Island_D"): {"Speedboat"},
+#     ("Island_D", "Island_C"): {"Speedboat"}
+# }
+
+simulation = Simulation(
+    num_commuters=200,
+    num_days=60,
+    islands=islands,
+    capacity=200,
+    ferry_base_price=1,
+    ferry_base_time=40,
+    speedboat_base_price=6,
+    speedboat_base_time=10,
+)
+
+simulation.run()
+
+# Plot specific results
+metrics_to_plot = [
+    'Ferry_Island_A_Island_B_users', 'Ferry_Island_A_Island_C_users', 'Ferry_Island_B_Island_C_users',
+    'Ferry_Island_B_Island_A_users', 'Ferry_Island_C_Island_A_users', 'Ferry_Island_C_Island_B_users',
+    'Speedboat_Island_A_Island_B_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_B_Island_C_users',
+    'Speedboat_Island_B_Island_A_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_C_Island_B_users'
+]
+
+simulation.plot_specific_results(metrics_to_plot)
+
+###########################################
+
+islands = ["Island_A", "Island_B"]
 
 # # Example usage with transport restrictions (restrictions are which mode to use)
 # # transport_restrictions = {
@@ -113,25 +142,25 @@ class Simulation:
 # #     ("Island_D", "Island_C"): {"Speedboat"}
 # # }
 
-# simulation = Simulation(
-#     num_commuters=1000,
-#     num_days=100,
-#     islands=islands,
-#     capacity=1000,
-#     ferry_base_price=1,
-#     ferry_base_time=40,
-#     speedboat_base_price=6,
-#     speedboat_base_time=20,
-# )
+simulation = Simulation(
+    num_commuters=1000,
+    num_days=100,
+    islands=islands,
+    capacity=1000,
+    ferry_base_price=1,
+    ferry_base_time=40,
+    speedboat_base_price=6,
+    speedboat_base_time=20,
+)
 
-# simulation.run()
+simulation.run()
 
-# # Plot specific results
-# metrics_to_plot = [
-#     'Ferry_Island_A_Island_B_users',
-#     'Ferry_Island_B_Island_A_users', 
-#     'Speedboat_Island_A_Island_B_users', 
-#     'Speedboat_Island_B_Island_A_users'
-# ]
+# Plot specific results
+metrics_to_plot = [
+    'Ferry_Island_A_Island_B_users',
+    'Ferry_Island_B_Island_A_users', 
+    'Speedboat_Island_A_Island_B_users', 
+    'Speedboat_Island_B_Island_A_users'
+]
 
-# simulation.plot_specific_results(metrics_to_plot)
+simulation.plot_percentage_ferry_users(metrics_to_plot)
