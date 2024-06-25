@@ -116,166 +116,166 @@ class Simulation:
 
 
 
-###########################################
-# Two Islands
-islands = ["Island_A", "Island_B"]
+# ###########################################
+# # Two Islands
+# islands = ["Island_A", "Island_B"]
 
 
-simulation = Simulation(
-    num_commuters=1000,
-    num_days=100,
-    islands=islands,
-    capacity=1000,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=20,
-)
+# simulation = Simulation(
+#     num_commuters=1000,
+#     num_days=100,
+#     islands=islands,
+#     capacity=1000,
+#     ferry_base_price=1,
+#     ferry_base_time=40,
+#     speedboat_base_price=6,
+#     speedboat_base_time=20,
+# )
 
-simulation.run()
+# simulation.run()
 
-# Plot specific results
-metrics_to_plot = [
-    'Ferry_Island_A_Island_B_users',
-    'Ferry_Island_B_Island_A_users', 
-    'Speedboat_Island_A_Island_B_users', 
-    'Speedboat_Island_B_Island_A_users'
-]
+# # Plot specific results
+# metrics_to_plot = [
+#     'Ferry_Island_A_Island_B_users',
+#     'Ferry_Island_B_Island_A_users', 
+#     'Speedboat_Island_A_Island_B_users', 
+#     'Speedboat_Island_B_Island_A_users'
+# ]
 
-simulation.plot_percentage_ferry_users(metrics_to_plot)
-
-
-# Three Islands
-islands = ["Island_A", "Island_B", "Island_C"]
-
-simulation = Simulation(
-    num_commuters=200,
-    num_days=60,
-    islands=islands,
-    capacity=200,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=10,
-)
-
-simulation.run()
-
-# Plot specific results
-metrics_to_plot = [
-    'Ferry_Island_A_Island_B_users', 'Ferry_Island_A_Island_C_users', 'Ferry_Island_B_Island_C_users',
-    'Ferry_Island_B_Island_A_users', 'Ferry_Island_C_Island_A_users', 'Ferry_Island_C_Island_B_users',
-    'Speedboat_Island_A_Island_B_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_B_Island_C_users',
-    'Speedboat_Island_B_Island_A_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_C_Island_B_users'
-]
-
-simulation.plot_specific_results(metrics_to_plot)
+# simulation.plot_percentage_ferry_users(metrics_to_plot)
 
 
-# Four Islands
-islands = ["Island_A", "Island_B", "Island_C", "Island_D"]
+# # Three Islands
+# islands = ["Island_A", "Island_B", "Island_C"]
 
-simulation = Simulation(
-    num_commuters=200,
-    num_days=60,
-    islands=islands,
-    capacity=200,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=10,
-)
+# simulation = Simulation(
+#     num_commuters=200,
+#     num_days=60,
+#     islands=islands,
+#     capacity=200,
+#     ferry_base_price=1,
+#     ferry_base_time=40,
+#     speedboat_base_price=6,
+#     speedboat_base_time=10,
+# )
 
-simulation.run()
+# simulation.run()
 
-# Plot specific results
-metrics_to_plot = [
-    'Ferry_Island_A_Island_B_users', 
-    'Ferry_Island_A_Island_C_users',
-    'Ferry_Island_A_Island_D_users', 
-    'Ferry_Island_B_Island_C_users',
-    'Ferry_Island_B_Island_A_users',
-    'Ferry_Island_B_Island_D_users',
-    'Ferry_Island_C_Island_A_users', 
-    'Ferry_Island_C_Island_B_users',
-    'Ferry_Island_C_Island_D_users',
-    'Ferry_Island_D_Island_A_users',
-    'Ferry_Island_D_Island_B_users',
-    'Ferry_Island_D_Island_C_users',
-    'Speedboat_Island_A_Island_B_users', 
-    'Speedboat_Island_A_Island_C_users', 
-    'Speedboat_Island_A_Island_D_users', 
-    'Speedboat_Island_B_Island_A_users',
-    'Speedboat_Island_B_Island_C_users',     
-    'Speedboat_Island_B_Island_D_users', 
-    'Speedboat_Island_C_Island_A_users', 
-    'Speedboat_Island_C_Island_B_users',
-    'Speedboat_Island_C_Island_D_users',
-    'Speedboat_Island_D_Island_A_users',
-    'Speedboat_Island_D_Island_B_users',
-    'Speedboat_Island_D_Island_C_users',
-]
+# # Plot specific results
+# metrics_to_plot = [
+#     'Ferry_Island_A_Island_B_users', 'Ferry_Island_A_Island_C_users', 'Ferry_Island_B_Island_C_users',
+#     'Ferry_Island_B_Island_A_users', 'Ferry_Island_C_Island_A_users', 'Ferry_Island_C_Island_B_users',
+#     'Speedboat_Island_A_Island_B_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_B_Island_C_users',
+#     'Speedboat_Island_B_Island_A_users', 'Speedboat_Island_A_Island_C_users', 'Speedboat_Island_C_Island_B_users'
+# ]
 
-simulation.plot_specific_results(metrics_to_plot)
+# simulation.plot_specific_results(metrics_to_plot)
 
-# Five Islands
-islands = ["Island_A", "Island_B", "Island_C", "Island_D", "Island_E"]
 
-simulation = Simulation(
-    num_commuters=200,
-    num_days=60,
-    islands=islands,
-    capacity=200,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=10,
-)
+# # Four Islands
+# islands = ["Island_A", "Island_B", "Island_C", "Island_D"]
 
-simulation.run()
+# simulation = Simulation(
+#     num_commuters=200,
+#     num_days=60,
+#     islands=islands,
+#     capacity=200,
+#     ferry_base_price=1,
+#     ferry_base_time=40,
+#     speedboat_base_price=6,
+#     speedboat_base_time=10,
+# )
 
-# Plot specific results
-metrics_to_plot = [
-    'Ferry_Island_A_Island_B_users', 
-    'Ferry_Island_A_Island_C_users',
-    'Ferry_Island_A_Island_D_users', 
-    'Ferry_Island_A_Island_E_users', 
-    'Ferry_Island_B_Island_A_users',
-    'Ferry_Island_B_Island_C_users',
-    'Ferry_Island_B_Island_D_users',
-    'Ferry_Island_B_Island_E_users',
-    'Ferry_Island_C_Island_A_users', 
-    'Ferry_Island_C_Island_B_users',
-    'Ferry_Island_C_Island_D_users',
-    'Ferry_Island_C_Island_E_users',
-    'Ferry_Island_D_Island_A_users',
-    'Ferry_Island_D_Island_B_users',
-    'Ferry_Island_D_Island_C_users',
-    'Ferry_Island_D_Island_E_users',
-    'Ferry_Island_E_Island_A_users',
-    'Ferry_Island_E_Island_B_users',
-    'Ferry_Island_E_Island_C_users',
-    'Ferry_Island_E_Island_D_users',
-    'Speedboat_Island_A_Island_B_users', 
-    'Speedboat_Island_A_Island_C_users', 
-    'Speedboat_Island_A_Island_D_users', 
-    'Speedboat_Island_A_Island_E_users', 
-    'Speedboat_Island_B_Island_A_users',
-    'Speedboat_Island_B_Island_C_users',     
-    'Speedboat_Island_B_Island_D_users', 
-    'Speedboat_Island_B_Island_E_users', 
-    'Speedboat_Island_C_Island_A_users', 
-    'Speedboat_Island_C_Island_B_users',
-    'Speedboat_Island_C_Island_D_users',
-    'Speedboat_Island_C_Island_E_users',
-    'Speedboat_Island_D_Island_A_users',
-    'Speedboat_Island_D_Island_B_users',
-    'Speedboat_Island_D_Island_C_users',
-    'Speedboat_Island_D_Island_E_users',
-    'Speedboat_Island_E_Island_A_users',
-    'Speedboat_Island_E_Island_B_users',
-    'Speedboat_Island_E_Island_C_users',
-    'Speedboat_Island_E_Island_D_users',
-]
+# simulation.run()
 
-simulation.plot_specific_results(metrics_to_plot)
+# # Plot specific results
+# metrics_to_plot = [
+#     'Ferry_Island_A_Island_B_users', 
+#     'Ferry_Island_A_Island_C_users',
+#     'Ferry_Island_A_Island_D_users', 
+#     'Ferry_Island_B_Island_C_users',
+#     'Ferry_Island_B_Island_A_users',
+#     'Ferry_Island_B_Island_D_users',
+#     'Ferry_Island_C_Island_A_users', 
+#     'Ferry_Island_C_Island_B_users',
+#     'Ferry_Island_C_Island_D_users',
+#     'Ferry_Island_D_Island_A_users',
+#     'Ferry_Island_D_Island_B_users',
+#     'Ferry_Island_D_Island_C_users',
+#     'Speedboat_Island_A_Island_B_users', 
+#     'Speedboat_Island_A_Island_C_users', 
+#     'Speedboat_Island_A_Island_D_users', 
+#     'Speedboat_Island_B_Island_A_users',
+#     'Speedboat_Island_B_Island_C_users',     
+#     'Speedboat_Island_B_Island_D_users', 
+#     'Speedboat_Island_C_Island_A_users', 
+#     'Speedboat_Island_C_Island_B_users',
+#     'Speedboat_Island_C_Island_D_users',
+#     'Speedboat_Island_D_Island_A_users',
+#     'Speedboat_Island_D_Island_B_users',
+#     'Speedboat_Island_D_Island_C_users',
+# ]
+
+# simulation.plot_specific_results(metrics_to_plot)
+
+# # Five Islands
+# islands = ["Island_A", "Island_B", "Island_C", "Island_D", "Island_E"]
+
+# simulation = Simulation(
+#     num_commuters=200,
+#     num_days=60,
+#     islands=islands,
+#     capacity=200,
+#     ferry_base_price=1,
+#     ferry_base_time=40,
+#     speedboat_base_price=6,
+#     speedboat_base_time=10,
+# )
+
+# simulation.run()
+
+# # Plot specific results
+# metrics_to_plot = [
+#     'Ferry_Island_A_Island_B_users', 
+#     'Ferry_Island_A_Island_C_users',
+#     'Ferry_Island_A_Island_D_users', 
+#     'Ferry_Island_A_Island_E_users', 
+#     'Ferry_Island_B_Island_A_users',
+#     'Ferry_Island_B_Island_C_users',
+#     'Ferry_Island_B_Island_D_users',
+#     'Ferry_Island_B_Island_E_users',
+#     'Ferry_Island_C_Island_A_users', 
+#     'Ferry_Island_C_Island_B_users',
+#     'Ferry_Island_C_Island_D_users',
+#     'Ferry_Island_C_Island_E_users',
+#     'Ferry_Island_D_Island_A_users',
+#     'Ferry_Island_D_Island_B_users',
+#     'Ferry_Island_D_Island_C_users',
+#     'Ferry_Island_D_Island_E_users',
+#     'Ferry_Island_E_Island_A_users',
+#     'Ferry_Island_E_Island_B_users',
+#     'Ferry_Island_E_Island_C_users',
+#     'Ferry_Island_E_Island_D_users',
+#     'Speedboat_Island_A_Island_B_users', 
+#     'Speedboat_Island_A_Island_C_users', 
+#     'Speedboat_Island_A_Island_D_users', 
+#     'Speedboat_Island_A_Island_E_users', 
+#     'Speedboat_Island_B_Island_A_users',
+#     'Speedboat_Island_B_Island_C_users',     
+#     'Speedboat_Island_B_Island_D_users', 
+#     'Speedboat_Island_B_Island_E_users', 
+#     'Speedboat_Island_C_Island_A_users', 
+#     'Speedboat_Island_C_Island_B_users',
+#     'Speedboat_Island_C_Island_D_users',
+#     'Speedboat_Island_C_Island_E_users',
+#     'Speedboat_Island_D_Island_A_users',
+#     'Speedboat_Island_D_Island_B_users',
+#     'Speedboat_Island_D_Island_C_users',
+#     'Speedboat_Island_D_Island_E_users',
+#     'Speedboat_Island_E_Island_A_users',
+#     'Speedboat_Island_E_Island_B_users',
+#     'Speedboat_Island_E_Island_C_users',
+#     'Speedboat_Island_E_Island_D_users',
+# ]
+
+# simulation.plot_specific_results(metrics_to_plot)
