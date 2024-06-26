@@ -116,33 +116,33 @@ class Simulation:
 
 
 
-###########################################
-# Two Islands
-islands = ["Island_A", "Island_B"]
+# ###########################################
+# # Two Islands
+# islands = ["Island_A", "Island_B"]
 
 
-simulation = Simulation(
-    num_commuters=1000,
-    num_days=100,
-    islands=islands,
-    capacity=1000,
-    ferry_base_price=1,
-    ferry_base_time=40,
-    speedboat_base_price=6,
-    speedboat_base_time=20,
-)
+# simulation = Simulation(
+#     num_commuters=1000,
+#     num_days=100,
+#     islands=islands,
+#     capacity=1000,
+#     ferry_base_price=1,
+#     ferry_base_time=40,
+#     speedboat_base_price=6,
+#     speedboat_base_time=20,
+# )
 
-simulation.run()
+# simulation.run()
 
-# Plot specific results
-metrics_to_plot = [
-    'Ferry_Island_A_Island_B_users',
-    'Ferry_Island_B_Island_A_users', 
-    'Speedboat_Island_A_Island_B_users', 
-    'Speedboat_Island_B_Island_A_users'
-]
+# # Plot specific results
+# metrics_to_plot = [
+#     'Ferry_Island_A_Island_B_users',
+#     'Ferry_Island_B_Island_A_users', 
+#     'Speedboat_Island_A_Island_B_users', 
+#     'Speedboat_Island_B_Island_A_users'
+# ]
 
-simulation.plot_percentage_ferry_users(metrics_to_plot)
+# simulation.plot_percentage_ferry_users(metrics_to_plot)
 
 
 # # Three Islands
