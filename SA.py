@@ -23,9 +23,9 @@ plt.style.use('default')
 
 # We define our variables and bounds
 problem = {
-    'num_vars': 3,
-    'names': ['sheep_reproduce', 'wolf_reproduce', 'wolf_gain_from_food'],
-    'bounds': [[0.01, 0.1], [0.01, 0.1], [5, 30]]
+    'num_vars': 2,
+    'names': ['ferry_price', 'ferry_capacity'],
+    'bounds': [[1, 10], [200, 2000]]
 }
 
 # Set the repetitions, the amount of steps, and the amount of distinct values per variable
@@ -34,22 +34,21 @@ max_steps = 100
 distinct_samples = 30 
 
 # Set the outputs
-model_reporters = {"Wolves": lambda m: m.schedule.get_breed_count(Wolf),
-             "Sheep": lambda m: m.schedule.get_breed_count(Sheep)}
+model_reporters = {"Ferry users": lambda m: m.percentage_ferry_users}
 
 # We get all our samples here
-param_values = saltelli.sample(problem, distinct_samples)
+param_values = saltelli.sample(problem, distinct_samples, calc_second_order=False)
 
 # READ NOTE BELOW CODE
-batch = BatchRunner(Sim, 
+batch = BatchRunner(Simulation, 
                     max_steps=max_steps,
                     variable_parameters={name:[] for name in problem['names']},
                     model_reporters=model_reporters)
 
 count = 0
 data = pd.DataFrame(index=range(replicates*len(param_values)), 
-                                columns=['sheep_reproduce', 'wolf_reproduce', 'wolf_gain_from_food'])
-data['Run'], data['Sheep'], data['Wolves'] = None, None, None
+                                columns=['ferry_price', 'ferry_capacity'])
+data['Run'], data['Pruces'], data['Capacities'] = None, None, None
 
 for i in range(replicates):
     for vals in param_values: 
@@ -73,8 +72,8 @@ for i in range(replicates):
 
 print(data)
 
-Si_sheep = sobol.analyze(problem, data['Sheep'].values, print_to_console=True) # Using the `analyze()` method provided by SALib that performs Sobol analysis.
-Si_wolves = sobol.analyze(problem, data['Wolves'].values, print_to_console=True)
+Si_prices = sobol.analyze(problem, data['Prices'].values, print_to_console=True) # Using the `analyze()` method provided by SALib that performs Sobol analysis.
+Si_capacities = sobol.analyze(problem, data['Capacities'].values, print_to_console=True)
 
 # Function for plotting
 def plot_index(s, params, i, title=''):
@@ -110,7 +109,7 @@ def plot_index(s, params, i, title=''):
     plt.errorbar(indices, range(l), xerr=errors, linestyle='None', marker='o')
     plt.axvline(0, c='k')
     
-for Si in (Si_sheep, Si_wolves):
+for Si in (Si_prices, Si_capacities):
     # First order
     plot_index(Si, problem['names'], '1', 'First order sensitivity')
     plt.show()
@@ -118,3 +117,25 @@ for Si in (Si_sheep, Si_wolves):
     # Total order
     plot_index(Si, problem['names'], 'T', 'Total order sensitivity')
     plt.show()
+    
+    
+###### Test ######
+import scipy as sp 
+from Simulate import *
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import os
+import pandas as pd
+import numpy as np
+from scipy.stats import sobol_indices, uniform
+
+problem = {
+    'num_vars': 2,
+    'names': ['ferry_prices', 'ferry_capacitie'],
+    'bounds': [np.arange(1, 11, 1), np.arange(200, 2200, 200)]
+}
+
+indices = sobol_indices(func=Simulation, n=512, dists=[
+        uniform(loc=-np.pi, scale=2*np.pi),
+        uniform(loc=-np.pi, scale=2*np.pi),
+        uniform(loc=-np.pi, scale=2*np.pi)], method='saltelli_2010')
