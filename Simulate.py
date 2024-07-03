@@ -15,6 +15,8 @@ class Simulation:
         self.islands = islands
         self.transport_modes = []  # Initialize transport_modes as an empty list
         self.transport_restrictions = transport_restrictions if transport_restrictions else {}
+        self.running = True
+        self.days_left = num_days
 
         self.create_transport_modes(islands, capacity, ferry_base_price, ferry_base_time, speedboat_base_price, speedboat_base_time)
         self.commuters = [Commuter(i, np.random.choice(islands), self.transport_modes) for i in range(num_commuters)]
@@ -44,6 +46,7 @@ class Simulation:
             data_collectors[f'{mode_key}_price'] = (lambda m, mode=mode: mode.price)
         return data_collectors
 
+<<<<<<< Updated upstream
     def run(self):
         for day in range(self.num_days):
             daily_choices = {mode: 0 for mode in self.transport_modes}
@@ -62,6 +65,45 @@ class Simulation:
                 commuter.update_memory(chosen_mode)
 
             self.datacollector.collect(self)
+=======
+    def step(self):
+        """
+        Run the simulation for the specified number of days.
+        """
+        
+        daily_choices = {mode: 0 for mode in self.transport_modes}
+        commuter_choices = {}
+
+        # Each commuter chooses a transportation mode
+        for commuter in self.commuters:
+            chosen_mode = commuter.choose_transportation()
+            daily_choices[chosen_mode] += 1
+            commuter_choices[commuter] = chosen_mode
+
+        # Update the conditions for each mode based on the number of users
+        for mode, num_users in daily_choices.items():
+            mode.update_conditions(num_users, self.num_commuters, self.initial_ferry_score)
+
+        # Update the memory of each commuter with the chosen mode
+        for commuter, chosen_mode in commuter_choices.items():
+            commuter.update_memory(chosen_mode)
+
+        # Collect data at the end of each day
+        self.datacollector.collect(self)
+
+    def run(self):
+        self.reset()
+        while self.running:
+            self.step()
+            self.days_left -= 1
+            if self.days_left < 0:
+                self.running = False
+
+    def reset(self):
+        self.running = True
+        self.days_left = self.num_days
+
+>>>>>>> Stashed changes
 
     def plot_specific_results(self, metrics):
         data = self.datacollector.get_model_vars_dataframe()
