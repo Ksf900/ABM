@@ -5,14 +5,15 @@ print("Everything imported!")
 
 #%matplotlib inline
 from SALib.sample import saltelli
-#from mesa.batchrunner import BatchRunner
-from mesa.batchrunner import batch_run
+from mesa import batch_run
 from SALib.analyze import sobol
+#from mesa.batchrunner import BatchRunner
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import combinations
 
+from BatchRunner import *
 from Simulate import *
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -30,7 +31,7 @@ problem = {
 
 # Generate samples
 distinct_samples = 512
-param_values = saltelli.sample(problem, distinct_samples, calc_second_order=False, n)
+param_values = saltelli.sample(problem, distinct_samples, calc_second_order=False)
 
 # Define the model reporters
 model_reporters = {
