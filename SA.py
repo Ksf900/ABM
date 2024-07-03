@@ -5,8 +5,8 @@ print("Everything imported!")
 
 #%matplotlib inline
 from SALib.sample import saltelli
-#from mesa.batchrunner import FixedBatchRunner
-from mesa.batchrunner import BatchRunner
+#from mesa.batchrunner import BatchRunner
+from mesa.batchrunner import batch_run
 from SALib.analyze import sobol
 import pandas as pd
 import numpy as np
@@ -28,54 +28,51 @@ problem = {
     'bounds': [[1, 10], [200, 2000]]
 }
 
-# Set the repetitions, the amount of steps, and the amount of distinct values per variable
-replicates = 30
+# Generate samples
+distinct_samples = 512
+param_values = saltelli.sample(problem, distinct_samples, calc_second_order=False, n)
+
+# Define the model reporters
+model_reporters = {
+    "Ferry_Users": lambda m: sum([mode.number_of_mode_users for mode in m.transport_modes if isinstance(mode, Ferry)])
+}
+
+# Prepare the BatchRunner
+replicates = 10
 max_steps = 100
-distinct_samples = 30 
-
-# Set the outputs
-model_reporters = {"Ferry users": lambda m: m.percentage_ferry_users}
-
-# We get all our samples here
-param_values = saltelli.sample(problem, distinct_samples, calc_second_order=False)
-
-# READ NOTE BELOW CODE
 batch = BatchRunner(Simulation, 
                     max_steps=max_steps,
-                    variable_parameters={name:[] for name in problem['names']},
+                    variable_parameters={name: [] for name in problem['names']},
                     model_reporters=model_reporters)
 
+# Prepare DataFrame to collect the results
+data = pd.DataFrame(index=range(replicates * len(param_values)), 
+                    columns=['ferry_base_price', 'ferry_base_time', 'speedboat_base_price', 'Run', 'Ferry_Users', 'Speedboat_Users'])
+
 count = 0
-data = pd.DataFrame(index=range(replicates*len(param_values)), 
-                                columns=['ferry_price', 'ferry_capacity'])
-data['Run'], data['Pruces'], data['Capacities'] = None, None, None
-
 for i in range(replicates):
-    for vals in param_values: 
-        # Change parameters that should be integers
-        vals = list(vals)
-        vals[2] = int(vals[2])
-        # Transform to dict with parameter names and their values
-        variable_parameters = {}
-        for name, val in zip(problem['names'], vals):
-            variable_parameters[name] = val
-
+    for vals in param_values:
+        variable_parameters = {name: val for name, val in zip(problem['names'], vals)}
         batch.run_iteration(variable_parameters, tuple(vals), count)
         iteration_data = batch.get_model_vars_dataframe().iloc[count]
-        iteration_data['Run'] = count # Don't know what causes this, but iteration number is not correctly filled
-        data.iloc[count, 0:3] = vals
-        data.iloc[count, 3:6] = iteration_data
+        iteration_data['Run'] = count
+        data.iloc[count, :3] = vals
+        data.iloc[count, 3:] = iteration_data
         count += 1
+        print(f'{count / (len(param_values) * replicates) * 100:.2f}% done')
 
-        clear_output()
-        print(f'{count / (len(param_values) * (replicates)) * 100:.2f}% done')
+# Save the results
+data.to_csv('simulation_results.csv', index=False)
 
-print(data)
+# Perform sensitivity analysis
+Y_ferry = data['Ferry_Users'].values
+Y_speedboat = data['Speedboat_Users'].values
 
-Si_prices = sobol.analyze(problem, data['Prices'].values, print_to_console=True) # Using the `analyze()` method provided by SALib that performs Sobol analysis.
-Si_capacities = sobol.analyze(problem, data['Capacities'].values, print_to_console=True)
+Si_ferry = sobol.analyze(problem, Y_ferry, print_to_console=True)
+Si_speedboat = sobol.analyze(problem, Y_speedboat, print_to_console=True)
 
-# Function for plotting
+### Function to plot ###
+
 def plot_index(s, params, i, title=''):
     """
     Creates a plot for Sobol sensitivity analysis that shows the contributions
@@ -109,15 +106,17 @@ def plot_index(s, params, i, title=''):
     plt.errorbar(indices, range(l), xerr=errors, linestyle='None', marker='o')
     plt.axvline(0, c='k')
     
-for Si in (Si_prices, Si_capacities):
+    
+### Plotting ###
+
+for Si in (Si_ferry, Si_speedboat):
     # First order
     plot_index(Si, problem['names'], '1', 'First order sensitivity')
     plt.show()
 
     # Total order
     plot_index(Si, problem['names'], 'T', 'Total order sensitivity')
-    plt.show()
-    
+    plt.show()    
     
 ###### Test ######
 import scipy as sp 
@@ -136,6 +135,5 @@ problem = {
 }
 
 indices = sobol_indices(func=Simulation, n=512, dists=[
-        uniform(loc=-np.pi, scale=2*np.pi),
         uniform(loc=-np.pi, scale=2*np.pi),
         uniform(loc=-np.pi, scale=2*np.pi)], method='saltelli_2010')
