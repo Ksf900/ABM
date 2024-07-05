@@ -22,7 +22,7 @@ class Simulation:
         initial_ferry_score (float): Initial score representing ferry conditions.
     """
     
-    def __init__(self, num_commuters=1000, num_days=100, islands=['A', 'B'], capacity=1000, ferry_base_price=6, ferry_base_time=40,
+    def __init__(self, num_commuters=1000, num_days=80, islands=['A', 'B'], capacity=1000, ferry_base_price=6, ferry_base_time=40,
                  speedboat_base_price=6, speedboat_base_time=10, transport_restrictions=None):
         """
         Initialises the Simulation instance with the given parameters.
@@ -129,6 +129,30 @@ class Simulation:
             # Collect data at the end of each day
             self.datacollector.collect(self)
 
+    def return_percentage_ferry_users(self):
+        """
+        Return the percentage of commuters using the ferry.
+        """
+        data = self.datacollector.get_model_vars_dataframe()
+        num_Ferry_users = 0
+        
+        # Calculate the total number of ferry users
+        for metric in data:
+            if metric.startswith('Ferry'):
+                num_Ferry_users += data[metric]
+
+        # Calculate the percentage of ferry users
+        percentage_Ferry_users = num_Ferry_users / self.num_commuters
+        return percentage_Ferry_users
+    
+    
+    def return_equilibrium_value(self):
+        results = self.return_percentage_ferry_users()
+        equilibrium_value = np.mean(results[-10:])
+
+        return equilibrium_value
+    
+
     def plot_specific_results(self, attribute='users', metrics=None):
         """
         Plot the results for specific attributes and metrics.
@@ -186,20 +210,4 @@ class Simulation:
         plt.grid(True)
         plt.show()
 
-    def return_percentage_ferry_users(self):
-        """
-        Return the percentage of commuters using the ferry.
-        """
-        data = self.datacollector.get_model_vars_dataframe()
-        num_Ferry_users = 0
-        
-        # Calculate the total number of ferry users
-        for metric in data:
-            if metric.startswith('Ferry'):
-                num_Ferry_users += data[metric]
-
-        # Calculate the percentage of ferry users
-        percentage_Ferry_users = num_Ferry_users / self.num_commuters
-        
-        return percentage_Ferry_users
     
