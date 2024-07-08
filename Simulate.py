@@ -145,6 +145,22 @@ class Simulation:
         percentage_Ferry_users = num_Ferry_users / self.num_commuters
         return percentage_Ferry_users
     
+    def return_percentage_speedboat_users(self):
+        """
+        Return the percentage of commuters using the speedboat.
+        """
+        data = self.datacollector.get_model_vars_dataframe()
+        num_Speedboat_users = 0
+        
+        # Calculate the total number of ferry users
+        for metric in data:
+            if metric.startswith('Speedboat'):
+                num_Speedboat_users += data[metric]
+
+        # Calculate the percentage of ferry users
+        percentage_Speedboat_users = num_Speedboat_users / self.num_commuters
+        return percentage_Speedboat_users
+    
     
     def return_equilibrium_value(self):
         results = self.return_percentage_ferry_users()
@@ -183,7 +199,34 @@ class Simulation:
         plt.xticks(np.arange(min(data.index), max(data.index) + 1, 5))
         plt.grid(True)
         plt.show()
+
+    def collect_specific_results(self, attribute='users'):
+        """
+        Collect the results for specific attributes and metrics separately for ferries and speedboats.
+
+        Args:
+            attribute (str): Attribute to collect (e.g. density, time, price, users).
+
+        Returns:
+            tuple: Two lists containing the collected data for specified attributes and metrics for ferries and speedboats.
+        """
+        data = self.datacollector.get_model_vars_dataframe()
+        collected_ferry_results = []
+        collected_speedboat_results = []
+
+        # Collect each ferry metric over the simulation days
         
+        for metric in data:
+            if metric.startswith('Ferry') and metric.endswith(attribute):
+                collected_ferry_results.append(data[metric].tolist())
+        
+        for metric in data:
+            if metric.startswith('Speedboat') and metric.endswith(attribute):
+                collected_speedboat_results.append(data[metric].tolist())
+
+        return collected_ferry_results, collected_speedboat_results
+        
+
     def plot_percentage_ferry_users(self):
         """
         Plot the percentage of commuters using the ferry.
@@ -209,4 +252,3 @@ class Simulation:
         plt.xticks(np.arange(min(data.index), max(data.index) + 1, 5))
         plt.grid(True)
         plt.show()
-
