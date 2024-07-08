@@ -56,7 +56,7 @@ class Simulation:
         )
 
         # Calculate the initial ferry score that is used to normalise the time points in Transportation
-        self.initial_ferry_score = (ferry_base_time - speedboat_base_time) / (ferry_base_time + speedboat_base_time)
+        self.initial_ferry_score = 1+9*((ferry_base_time - speedboat_base_time) / (ferry_base_time + speedboat_base_time))
         
     def create_transport_modes(self, capacity, ferry_base_price, ferry_base_time, speedboat_base_price, speedboat_base_time):
         """
@@ -210,4 +210,3 @@ class Simulation:
         plt.grid(True)
         plt.show()
 
-    
