@@ -215,11 +215,10 @@ class Simulation:
         collected_speedboat_results = []
 
         # Collect each ferry metric over the simulation days
-        
         for metric in data:
             if metric.startswith('Ferry') and metric.endswith(attribute):
                 collected_ferry_results.append(data[metric].tolist())
-        
+        # Collect each speedboat metric over the simulation days
         for metric in data:
             if metric.startswith('Speedboat') and metric.endswith(attribute):
                 collected_speedboat_results.append(data[metric].tolist())
