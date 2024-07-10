@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-This project focuses on simulating commuter behavior in choosing transportation modes between islands using agent-based modeling (ABM). The primary goal is to understand the impact of various policies, such as reducing ferry prices and increasing ferry capacities, on the usage of public transportation (ferry) versus private transportation (speedboat). The simulation uses a utility-based decision-making process influenced by factors such as travel time, density, and cost.
+This project focuses on simulating commuter behaviour in choosing transportation modes between islands using agent-based modeling (ABM). The primary goal is to understand the impact of various policies, such as reducing ferry prices and increasing ferry capacities, on the usage of public transportation (ferry) versus private transportation (speedboat). The simulation uses a utility-based decision-making process influenced by factors such as travel time, density, and cost.
 
 ## Project Structure
 
@@ -31,20 +31,17 @@ The `simulation.py` file defines the `Simulation` class, which orchestrates the 
 - Attributes: number of commuters, number of days, number of islands, and transportation modes.
 - Methods:
   - `run`: Executes the simulation over the specified number of days.
-  - `create_transport_modes`: Initializes the transportation modes.
+  - `create_transport_modes`: Initialises the transportation modes.
   - `collect_specific_results`: Collects results for specific attributes such as density, travel time, and price.
   - `return_percentage_ferry_users`: Returns the percentage of commuters using the ferry.
 
 ### 4. Analysis Jupyter Notebook
 The `analysis.ipynb` file contains the actual experiments and plots. It includes:
-- Initialization of the simulation environment with various parameters.
+- Initialisation of the simulation environment with various parameters.
 - Running the simulation for different scenarios (varying ferry capacities and prices).
-- Collecting and analyzing the results.
-- Generating plots to visualize the impact of policy changes on transportation mode usage.
+- Collecting and analysing the results.
+- Generating plots to visualise the impact of policy changes on transportation mode usage.
 
 ## How to Run the Project
 
-1. **Clone the Repository**: Clone this repository to your local machine.
-   ```sh
-   git clone <repository-url>
-   cd <repository-directory>
+Open the Jupyter notebook `analysis.ipynb` which contains the complete simulation and analysis code. As you run the cells in the analysis.ipynb notebook, you will see outputs including charts and tables that are used in our report. These outputs provide insights into how different policies affect the usage of transportation modes among commuters.
